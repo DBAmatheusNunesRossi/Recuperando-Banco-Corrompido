@@ -15,7 +15,7 @@ go
 CREATE DATABASE VendasDB
 go
 
--- IF EXISTS só a partir do SQL Server 2016
+-- IF EXISTS sÃ³ a partir do SQL Server 2016
 DROP TABLE IF exists VendasDB.dbo.Cliente
 
 CREATE TABLE VendasDB.dbo.Cliente (
@@ -48,31 +48,31 @@ BACKUP LOG VendasDB TO DISK = 'C:\MSSQL\Backups\LOG\VendasDB_01.trn' WITH format
 
 
 /***********************************************************************************
-DBCC IND - Lista as páginas de um objeto no banco de dados
+DBCC IND - Lista as pÃ¡ginas de um objeto no banco de dados
 DBCC IND ( { 'dbname' | dbid }, { 'objname' | objid }, { nonclustered indid | 1 | 0 | -1 | -2 } [, partition_number] )
 
-1° parâmetro: nome do banco, se passar zero pega o banco corrente
+1Â° parÃ¢metro: nome do banco, se passar zero pega o banco corrente
 
-2° parâmetro: nome da tabela
+2Â° parÃ¢metro: nome da tabela
 
-3° parâmetro: index_id (-1 mostra tudo)
+3Â° parÃ¢metro: index_id (-1 mostra tudo)
 
 SELECT [name] as NomeIndice, index_id, [type], type_desc 
 FROM sys.indexes WHERE [object_id] = object_id('Cliente')
 
-4° parâmetro: opcional, indica o número da partição (partition_id)
+4Â° parÃ¢metro: opcional, indica o nÃºmero da partiÃ§Ã£o (partition_id)
 
-PageFID: número do arquivo de dados onde a página está.
-PagePID: número da página dentro do arquivo de dados.
-IAMFIND: número do arquivo de dados que contém a página do IAM que armazena o endereço da página
-IAMFPID: número da página do IAM que armazena o endereço da página
+PageFID: nÃºmero do arquivo de dados onde a pÃ¡gina estÃ¡.
+PagePID: nÃºmero da pÃ¡gina dentro do arquivo de dados.
+IAMFIND: nÃºmero do arquivo de dados que contÃ©m a pÃ¡gina do IAM que armazena o endereÃ§o da pÃ¡gina
+IAMFPID: nÃºmero da pÃ¡gina do IAM que armazena o endereÃ§o da pÃ¡gina
 
 PageType:
 1  - Data Page
 2  - Index Page
 10 - IAM Page
 
-IndexLevel: zero nível folha
+IndexLevel: zero nÃ­vel folha
 ***********************************************************************************/
 
 DBCC TRACEON (2588) -- Habilita o uso do DBCC HELP
@@ -93,10 +93,10 @@ DBCC PAGE(VendasDB, 1, 265, 3) --WITH NO_INFOMSGS, TABLERESULTS
 
 
 /*********************************************************
- ATENÇÃO muito cuidado!
- - Escreve direto nas páginas de arquivos de dados.
- - Não gera escrita no Transaction Log e não tem ROLLBACK.
- - Utilizado apenas para estudo, demonstrações e testes. 
+ ATENÃ‡ÃƒO muito cuidado!
+ - Escreve direto nas pÃ¡ginas de arquivos de dados.
+ - NÃ£o gera escrita no Transaction Log e nÃ£o tem ROLLBACK.
+ - Utilizado apenas para estudo, demonstraÃ§Ãµes e testes. 
 **********************************************************/
 DBCC HELP ('WRITEPAGE') -- dbcc WRITEPAGE ({'dbname' | dbid}, fileid, pageid, {offset | 'fieldname'}, length, data [, directORbufferpool])
 
@@ -110,7 +110,7 @@ WHERE Nome = 'Jose' -- OK
 
 SELECT * 
 FROM VendasDB.dbo.Cliente 
-WHERE Nome = 'Carla'-- Erro, cai a conexão
+WHERE Nome = 'Carla'-- Erro, cai a conexÃ£o
 
 /**************
 Msg 824, Level 24, State 2, Line 111
@@ -129,7 +129,7 @@ FROM msdb..suspect_pages
 -- Verifica a integridade
 DBCC CHECKDB (VendasDB) WITH NO_INFOMSGS;
 
--- Corrige a inconsistência
+-- Corrige a inconsistÃªncia
 ALTER DATABASE VendasDB SET SINGLE_USER WITH ROLLBACK IMMEDIATE
 DBCC CHECKDB (VendasDB, REPAIR_ALLOW_DATA_LOSS)
 ALTER DATABASE VendasDB SET  MULTI_USER WITH NO_WAIT
