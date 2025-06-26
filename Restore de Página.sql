@@ -16,7 +16,7 @@ go
 CREATE DATABASE VendasDB
 go
 
--- IF EXISTS só a partir do SQL Server 2016
+-- IF EXISTS sÃ³ a partir do SQL Server 2016
 DROP TABLE IF exists VendasDB.dbo.Cliente
 
 CREATE TABLE VendasDB.dbo.Cliente (
